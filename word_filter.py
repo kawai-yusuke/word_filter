@@ -1,28 +1,35 @@
-class WordFilter():
+class WordFilter:
     def __init__(self, target):
         self.target = target
 
-    def detect(self, sentence):
-        return self.target in sentence
-
     def censor(self, sentence, converted_word):
-        self.sentence = sentence
-        self.converted_word = converted_word
-        conversion = self.sentence.replace(self.target, self.converted_word)
-        return conversion
+        for i in range(0, len(self.target)):
+            if self.target[i] in sentence:
+                sentence = sentence.replace(self.target[i], converted_word)
+        return sentence
 
 
+print("NGワードを設定してください")
+print("NGワードを入力し終わったら、半角でeを入力してください")
 
-my_filter = WordFilter("アーセナル")
 
-# NGワードが含まれている場合
-my_filter.detect("昨日のアーセナルの試合アツかった！")  # Trueを返す ※出力されるわけではありません！
+def ng_word_list():
+    fil = []
+    counter = 1
+    while True:
+        ng_word = input(f"NGワード{counter} :")
+        if ng_word == "e":
+            break
+        fil.append(ng_word)
+        counter += 1
+    return fil
 
-# NGワードが含まれていない場合
-my_filter.detect("昨日のリバプールの試合アツかった！")  # Falseを返す ※出力されるわけではありません！
 
-# NGワードが含まれている場合
-my_filter.censor("昨日のアーセナルの試合アツかった！", "<bad word>")  # "昨日の<censored>の試合アツかった！" を返す ※出力されるわけではありません！
-
-# NGワードが含まれていない場合
-my_filter.censor("昨日のリバプールの試合アツかった！", "<negative word>")  # "昨日のリバプールの試合アツかった！" を返す ※出力されるわけではありません！
+repeat = "y"
+while repeat.lower() == "y":
+    my_filter = WordFilter(ng_word_list())
+    print(my_filter.censor("昨日のアーセナルの試合は熱かった", "ピー"))
+    print(my_filter.censor("昨日のリバプールの試合は熱かった", "ピー"))
+    repeat = input("フィルタリングをし直しますか?(y/n)")
+    if repeat.lower() == "n":
+        break
