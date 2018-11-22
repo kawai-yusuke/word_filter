@@ -4,8 +4,8 @@ class WordFilter:
 
     def censor(self, sentence, converted_word):
         for i in range(0, len(self.target)):
-            if self.target[i] in sentence:
-                sentence = sentence.replace(self.target[i], converted_word)
+            # if self.target[i] in sentence:   ←なくてもよさげ?
+            sentence = sentence.replace(self.target[i], converted_word)
         return sentence
 
 
